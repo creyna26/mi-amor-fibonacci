@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flor de Fibonacci v3</title>
+    <style>
+        :root {
+            --bg-color: #1a0a1a;
+            --heart-color: #ff4d6d;
+            --text-primary: #fff0f3;
+            --accent-soft: #ffb3c1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            text-align: center;
+            position: absolute;
+            top: 20px;
+            z-index: 10;
+            padding: 0 20px;
+            pointer-events: none;
+            /* Permite hacer clic a través del texto */
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--accent-soft);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+        }
+
+        .subtitle {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-node {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+            animation: heartAppear 0.8s forwards ease-out;
+        }
+
+        @keyframes heartAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-45deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            z-index: 10;
+        }
+
+        button {
+            background-color: transparent;
+            border: 2px solid var(--heart-color);
+            color: var(--heart-color);
+            padding: 8px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--heart-color);
+            color: white;
+            box-shadow: 0 0 15px var(--heart-color);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>"Mi amor por ti es como la secuencia de Fibonacci"</h1>
+        <div class="subtitle">Cada pétalo es un latido que crece para ti...</div>
+    </header>
+
+    <div id="canvas-container"></div>
+
+    <div class="controls">
+        <button id="resetBtn">Reiniciar Flor</button>
+    </div>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        const resetBtn = document.getElementById('resetBtn');
+
+        let count = 0;
+        const maxNodes = 400;
+        let interval;
+
+        // --- LÓGICA DE FILOTAXIS (FLOR) ---
+        const goldenAngle = 137.508; // El ángulo mágico de la naturaleza
+        const spread = 12; // Qué tan abierta queda la flor
+
+        function createShape(index) {
+            const node = document.createElement('div');
+            node.className = 'heart-node'; // Se mantiene la clase para usar el CSS existente
+
+            const angle = index * goldenAngle * (Math.PI / 180);
+            const radius = spread * Math.sqrt(index);
+
+            const x = radius * Math.cos(angle);
+            const y = radius * Math.sin(angle);
+
+            // Ajuste de posición centrado
+            node.style.left = `calc(50% + ${x}px - 10px)`;
+            node.style.top = `calc(50% + ${y}px - 10px)`;
+
+            // Variación sutil de brillo para dar profundidad
+            const brightness = 100 + (index % 20);
+            node.style.filter = `brightness(${brightness}%)`;
+
+            // VARIACIÓN: Símbolo de destellos
+            const icon = '🌸';
+
+            node.innerHTML = `<span style="font-size: 20px;">${icon}</span>`;
+
+            container.appendChild(node);
+        }
+
+        function generateFlower() {
+            if (count >= maxNodes) {
+                clearInterval(interval);
+                return;
+            }
+
+            createShape(count);
+            count++;
+        }
+
+        function start() {
+            count = 0;
+            container.innerHTML = '';
+            // Generación fluida
+            interval = setInterval(generateFlower, 50);
+        }
+
+        resetBtn.addEventListener('click', () => {
+            clearInterval(interval);
+            start();
+        });
+
+        start();
+
+        const stopAnimation = () => clearInterval(interval);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') stopAnimation(); });
+        container.addEventListener('click', stopAnimation);
+    </script>
+</body>
+
+</html>
