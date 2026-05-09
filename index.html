@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flor de Fibonacci v3</title>
+    <title>Mi amor por ti</title>
     <style>
         :root {
             --bg-color: #1a0a1a;
@@ -62,8 +62,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             opacity: 0;
             animation: heartAppear 0.8s forwards ease-out;
         }
@@ -123,7 +123,7 @@
         const resetBtn = document.getElementById('resetBtn');
 
         let count = 0;
-        const maxNodes = 400;
+        const maxNodes = 300;
         let interval;
 
         // --- LÓGICA DE FILOTAXIS (FLOR) ---
@@ -141,8 +141,8 @@
             const y = radius * Math.sin(angle);
 
             // Ajuste de posición centrado
-            node.style.left = `calc(50% + ${x}px - 10px)`;
-            node.style.top = `calc(50% + ${y}px - 10px)`;
+            node.style.left = `calc(50% + ${x}px - 8px)`;
+            node.style.top = `calc(50% + ${y}px - 8px)`;
 
             // Variación sutil de brillo para dar profundidad
             const brightness = 100 + (index % 20);
@@ -151,7 +151,7 @@
             // VARIACIÓN: Símbolo de destellos
             const icon = '🌸';
 
-            node.innerHTML = `<span style="font-size: 20px;">${icon}</span>`;
+            node.innerHTML = `<span style="font-size: 18px;">${icon}</span>`;
 
             container.appendChild(node);
         }
@@ -170,7 +170,7 @@
             count = 0;
             container.innerHTML = '';
             // Generación fluida
-            interval = setInterval(generateFlower, 50);
+            interval = setInterval(generateFlower, 40);
         }
 
         resetBtn.addEventListener('click', () => {
